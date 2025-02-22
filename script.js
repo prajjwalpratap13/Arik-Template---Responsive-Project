@@ -1,4 +1,35 @@
 let tl=gsap.timeline();
+function locomotiveAnimation(){
+    gsap.registerPlugin(ScrollTrigger);
+
+const locoScroll = new LocomotiveScroll({
+  el: document.querySelector("#main"),
+  smooth: true
+});
+locoScroll.on("scroll", ScrollTrigger.update);
+ScrollTrigger.scrollerProxy("#main", {
+  scrollTop(value) {
+    return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
+  },
+  getBoundingClientRect() {
+    return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
+  },
+  pinType: document.querySelector("#main").style.transform ? "transform" : "fixed"
+});
+ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+ScrollTrigger.refresh();
+}
+locomotiveAnimation();
+
+let crsr=document.querySelector("#crsr");
+
+let body=document.querySelector("body");
+body.addEventListener("mousemove",(dets)=>{
+    gsap.to(crsr,{
+        left: dets.x,
+        top: dets.y
+    })
+})
 gsap.from("#page1 h1, #page1 p",{
     y: 20,
     opacity: 0
@@ -9,7 +40,7 @@ gsap.from("#page3 .container .boxes",{
     scale: 0,
     stagger: 0.12,
     scrollTrigger: ("#page3 .container .boxes",{
-        scroller: "body",
+        scroller: "#main",
         trigger: "#page3 .container .boxes",
         start: "top 95%"
     })
@@ -19,7 +50,7 @@ tl.from("#page4 .topic h3,#page4 .topic .content",{
     opacity: 0,
     stagger: 0.3,
     scrollTrigger: ("#page4 .topic h3,#page4 .topic .content",{
-        scroller: "body",
+        scroller: "#main",
         trigger: "#page4 .topic h3,#page4 .topic .content",
         start: "top 70%",
         end: "top 40%",
@@ -31,7 +62,7 @@ tl.from(".pictures .img",{
     opacity: 0,
     stagger: 0.3,
     scrollTrigger: (".pictures .img",{
-        scroller: "body",
+        scroller: "#main",
         trigger: ".pictures .img",
         start: "top 80%",
         end: "top 60%",
@@ -43,7 +74,7 @@ tl.from("#page5 .center .topic h3,#page5 .center .topic p",{
     opacity: 0,
     stagger: 0.3,
     scrollTrigger: ("#page5 .center .topic h3,#page5 .center .topic p",{
-        scroller: "body",
+        scroller: "#main",
         trigger: "#page5 .center .topic h3,#page5 .center .topic p",
         start: "top 80%",
         end: "top 60%",
@@ -55,7 +86,7 @@ tl.from("#page5 .flex .dabba",{
     opacity: 0,
     stagger: 0.3,
     scrollTrigger: ("#page5 .flex .dabba",{
-        scroller: "body",
+        scroller: "#main",
         trigger: "#page5 .flex .dabba",
         start: "top 80%",
         end: "top 60%",
@@ -67,7 +98,7 @@ tl.from("#page6 .content h2",{
     opacity: 0,
     stagger: 0.3,
     scrollTrigger: ("#page6 .content h2",{
-        scroller: "body",
+        scroller: "#main",
         trigger: "#page6 .content h2",
         start: "top 60%",
         end: "top 20%",
